@@ -16,10 +16,11 @@ namespace ArgenMoto.Core.Entities
         public decimal MontoTotal { get; set; }
         public string? Iva { get; set; }
         public string? Estado { get; set; }
-        public int IdOrdenCompra { get; set; }
+        public int IdCliente { get; set; }
         public int IdFormaCobro { get; set; }
 
+        public virtual ICollection<HistorialPedido> HistorialPedidos { get; set; } = new List<HistorialPedido>();
+        public virtual Cliente Cliente { get; set; } = null!;
         public virtual FormasCobro FormasCobro { get; set; } = null!;
-        public virtual OrdenesCompra OrdenesCompra { get; set; } = null!;
     }
 }

@@ -18,5 +18,6 @@ namespace ArgenMoto.Core.Entities
 
         public virtual ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
         public virtual ICollection<Repuesto> Repuestos { get; set; } = new List<Repuesto>();
+        public virtual ICollection<OrdenesCompra> OrdenesCompras { get; set; } = new List<OrdenesCompra>();
     }
 }

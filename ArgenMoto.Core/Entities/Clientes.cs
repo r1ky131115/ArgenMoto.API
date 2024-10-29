@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ArgenMoto.Core.Entities
+﻿namespace ArgenMoto.Core.Entities
 {
     public partial class Cliente
     {
         public int Id { get; set; }
+        public int? IdUsuario { get; set; }
         public string TipoDocumento { get; set; } = null!;
         public string NumeroDocumento { get; set; } = null!;
         public string? RazonSocial { get; set; }
@@ -18,8 +16,11 @@ namespace ArgenMoto.Core.Entities
         public string? Telefono { get; set; }
         public string Email { get; set; } = null!;
 
-        public virtual ICollection<OrdenesCompra> OrdenesCompras { get; set; } = new List<OrdenesCompra>();
 
+        public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
+        public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
+        public virtual ICollection<HistorialPedido> HistorialPedidos { get; set; } = new List<HistorialPedido>();
+        public virtual Usuario? Usuario { get; set; }
         public virtual ICollection<TurnosPreventa> TurnosPreventa { get; set; } = new List<TurnosPreventa>();
     }
 }

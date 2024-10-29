@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="bin\Debug\net8.0\" />
+    <Folder Include="DTOs\Factura\" />
   </ItemGroup>
 
 </Project>

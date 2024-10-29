@@ -20,6 +20,7 @@ namespace ArgenMoto.Core.Entities
         public int? IdProveedor { get; set; }
         public virtual Proveedor? Proveedor { get; set; }
 
+        public virtual ICollection<CarritoDetalle> CarritoDetalles { get; set; } = new List<CarritoDetalle>();
         public virtual ICollection<OrdenCompraDetalle> OrdenCompraDetalles { get; set; } = new List<OrdenCompraDetalle>();
         public virtual ICollection<Repuesto> Repuestos { get; set; } = new List<Repuesto>();
         public virtual ICollection<TurnosPreventa> TurnosPreventa { get; set; } = new List<TurnosPreventa>();
