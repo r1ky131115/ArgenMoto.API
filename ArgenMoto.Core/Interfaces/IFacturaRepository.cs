@@ -9,6 +9,8 @@ namespace ArgenMoto.Core.Interfaces
         Task<IEnumerable<Factura>> GetAllAsync();
         Task<Factura> GetByIdAsync(int id);
         Task<Factura> CreateAsync(Factura factura);
+        Task UpdateAsync(Factura factura);
+        Task DeleteAsync(int id);
     }
 
 }

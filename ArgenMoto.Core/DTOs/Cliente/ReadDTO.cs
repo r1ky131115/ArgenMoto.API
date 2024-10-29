@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ArgenMoto.Core.DTOs.Cliente
 {
-    public class ClienteReadDTO
+    public class ReadDTO
     {
         public int Id { get; set; }
         public string TipoDocumento { get; set; }

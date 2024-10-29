@@ -10,12 +10,12 @@ namespace ArgenMoto.API.Mappings
         public AutoMapperProfile()
         {
             //Mapeo de cliente
-            CreateMap<Cliente, ClienteReadDTO>();
-            CreateMap<ClienteReadDTO, Cliente>();
+            CreateMap<Cliente, Core.DTOs.Cliente.ReadDTO>();
+            CreateMap<Core.DTOs.Cliente.ReadDTO, Cliente>();
 
             //Mapeo de Articulo
-            CreateMap<Articulo, ArticuloReadDTO>();
-            CreateMap<ArticuloReadDTO, Articulo>();
+            CreateMap<Articulo, Core.DTOs.Articulo.ReadDTO>();
+            CreateMap<Core.DTOs.Articulo.ReadDTO, Articulo>();
         }
     }
 }

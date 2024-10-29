@@ -20,33 +20,33 @@ namespace ArgenMoto.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClienteReadDTO>>> GetClientes()
+        public async Task<ActionResult<IEnumerable<ReadDTO>>> GetClientes()
         {
             var clientes = await _clienteRepository.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<ClienteReadDTO>>(clientes));
+            return Ok(_mapper.Map<IEnumerable<ReadDTO>>(clientes));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClienteReadDTO>> GetCliente(int id)
+        public async Task<ActionResult<ReadDTO>> GetCliente(int id)
         {
             var cliente = await _clienteRepository.GetByIdAsync(id);
             if (cliente == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<ClienteReadDTO>(cliente));
+            return Ok(_mapper.Map<ReadDTO>(cliente));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClienteCreateDTO>> CreateCliente(ClienteUpdateDTO clienteDto)
+        public async Task<ActionResult<CreateDTO>> CreateCliente(UpdateDTO clienteDto)
         {
             var cliente = _mapper.Map<Cliente>(clienteDto);
             var createdCliente = await _clienteRepository.CreateAsync(cliente);
-            return CreatedAtAction(nameof(GetCliente), new { id = createdCliente.Id }, _mapper.Map<ClienteCreateDTO>(createdCliente));
+            return CreatedAtAction(nameof(GetCliente), new { id = createdCliente.Id }, _mapper.Map<CreateDTO>(createdCliente));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCliente(int id, ClienteUpdateDTO clienteDto)
+        public async Task<IActionResult> UpdateCliente(int id, UpdateDTO clienteDto)
         {
             if (id != clienteDto.IdCliente)
             {

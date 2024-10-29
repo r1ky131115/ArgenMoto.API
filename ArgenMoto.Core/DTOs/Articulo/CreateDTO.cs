@@ -1,6 +1,6 @@
 ﻿namespace ArgenMoto.Core.DTOs.Articulo
 {
-    public class ArticuloCreateDTO
+    public class CreateDTO
     {
         public string CodigoArticulo { get; set; }
         public string Descripcion { get; set; }

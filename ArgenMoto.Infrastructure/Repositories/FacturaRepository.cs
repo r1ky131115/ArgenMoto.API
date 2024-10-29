@@ -21,6 +21,20 @@ namespace ArgenMoto.Infrastructure.Repositories
             return factura;
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var factura = await _context.Facturas.FindAsync(id);
+            if (factura != null)
+            {
+                _context.Facturas.Remove(factura);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Factura with ID {id} not found.");
+            }
+        }
+
         public async Task<IEnumerable<Factura>> GetAllAsync()
         {
             return await _context.Facturas.ToListAsync();
@@ -28,8 +42,26 @@ namespace ArgenMoto.Infrastructure.Repositories
 
         public async Task<Factura> GetByIdAsync(int id)
         {
-            return await _context.Facturas.FindAsync(id);
+            var factura = await _context.Facturas.FindAsync(id);
+            if (factura == null)
+            {
+                throw new KeyNotFoundException($"Factura with ID {id} not found.");
+            }
+            return factura;
+        }
+
+        public async Task UpdateAsync(Factura factura)
+        {
+            var existingFactura = await _context.Facturas.FindAsync(factura.Id);
+            if (existingFactura != null)
+            {
+                _context.Entry(existingFactura).CurrentValues.SetValues(factura);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Factura with ID {factura.Id} not found.");
+            }
         }
     }
-
 }
