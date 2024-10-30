@@ -62,5 +62,10 @@ namespace ArgenMoto.Infrastructure.Repositories
         {
             return await _dbContext.Database.BeginTransactionAsync();
         }
+
+        public async Task<Usuario?> ObtenerPorEmailAsync(string email)
+        {
+            return await _dbContext.Usuarios?.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

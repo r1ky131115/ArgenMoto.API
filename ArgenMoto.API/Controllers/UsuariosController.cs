@@ -1,6 +1,7 @@
 ﻿using ArgenMoto.Core.DTOs.Usuario;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
+using ArgenMoto.Core.Utils;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,22 +11,26 @@ namespace ArgenMoto.API.Controllers
     [Route("api/[controller]")]
     public class UsuariosController : ControllerBase
     {
+        private readonly IPasswordHasher _passwordHasher;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IClienteRepository _clienteRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UsuariosController> _logger;
+        private readonly IJwtService _jwtService;
 
-        public UsuariosController(IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository, 
-            IMapper mapper, ILogger<UsuariosController> logger)
+        public UsuariosController(IPasswordHasher passwordHasher, IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository, 
+            IMapper mapper, ILogger<UsuariosController> logger, IJwtService jwtService)
         {
+            _passwordHasher = passwordHasher;
             _usuarioRepository = usuarioRepository;
             _clienteRepository = clienteRepository;
             _mapper = mapper;
             _logger = logger;
+            _jwtService = jwtService;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReadUsuarioDTO>> GetUsuario(int id)
+        public async Task<ActionResult<ReadUsuarioDTO>> GetUsuario([FromRoute] int id)
         {
             var usuario = await _usuarioRepository.GetByIdAsync(id);
             if (usuario == null)
@@ -59,7 +64,7 @@ namespace ArgenMoto.API.Controllers
                 {
                     Username = usuarioDto.Email, // Usar email como username
                     Email = usuarioDto.Email,
-                    PasswordHash = usuarioDto.PasswordHash,
+                    PasswordHash = _passwordHasher.HashPassword(usuarioDto.PasswordHash),
                     Rol = "Cliente", // Rol por defecto
                     FechaCreacion = DateOnly.FromDateTime(DateTime.Now),
                     Estado = "Activo"
@@ -104,6 +109,27 @@ namespace ArgenMoto.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear usuario y cliente");
+                return StatusCode(500, new { mensaje = "Error interno del servidor" });
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginUserDTO>> Login([FromBody] LoginUsuarioDTO loginDto)
+        {
+            try
+            {
+                var usuario = await _usuarioRepository.ObtenerPorEmailAsync(loginDto.Email);
+                if (usuario == null || !_passwordHasher.VerifyPassword(loginDto.Password, usuario.PasswordHash))
+                {
+                    return Unauthorized(new { mensaje = "Correo o contraseña incorrectos" });
+                }
+
+                var token = _jwtService.GenerateToken(usuario.Username);
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al iniciar sesión");
                 return StatusCode(500, new { mensaje = "Error interno del servidor" });
             }
         }

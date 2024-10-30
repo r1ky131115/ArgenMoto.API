@@ -2,6 +2,7 @@
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArgenMoto.API.Controllers

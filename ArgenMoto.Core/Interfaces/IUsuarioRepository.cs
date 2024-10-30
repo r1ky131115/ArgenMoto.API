@@ -12,5 +12,6 @@ namespace ArgenMoto.Core.Interfaces
         Task DeleteAsync(int id);
         Task<bool> ExisteEmailAsync(string email);
         Task<IDbContextTransaction> BeginTransactionAsync();
+        Task<Usuario?> ObtenerPorEmailAsync(string email);
     }
 }
