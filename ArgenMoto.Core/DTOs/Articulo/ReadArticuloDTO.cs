@@ -1,7 +1,10 @@
-﻿namespace ArgenMoto.Core.DTOs.Articulo
+﻿using System;
+
+namespace ArgenMoto.Core.DTOs.Articulo
 {
-    public class CreateDTO
+    public class ReadArticuloDTO
     {
+        public int IdArticulo { get; set; }
         public string CodigoArticulo { get; set; }
         public string Descripcion { get; set; }
         public int? StockActual { get; set; }
@@ -12,5 +15,6 @@
         public int NroChasis { get; set; }
         public int Año { get; set; }
         public string Cilindro { get; set; }
+        public DateTime FechaCreacion { get; set; } // Ejemplo de campo adicional
     }
 }

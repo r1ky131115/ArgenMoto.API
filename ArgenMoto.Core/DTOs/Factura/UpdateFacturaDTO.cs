@@ -1,10 +1,10 @@
 ﻿namespace ArgenMoto.Core.DTOs.Factura
 {
-    public class CreateDTO
+    public class UpdateFacturaDTO
     {
-        public string NumeroPedido { get; set; } = null!;
+        public string? NumeroPedido { get; set; }
         public DateOnly Fecha { get; set; }
-        public string Apellido { get; set; } = null!;
+        public string? Apellido { get; set; }
         public string? Descripcion { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }

@@ -2,6 +2,7 @@
 using ArgenMoto.Core.Interfaces;
 using ArgenMoto.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ArgenMoto.Infrastructure.Repositories
 {
@@ -50,6 +51,16 @@ namespace ArgenMoto.Infrastructure.Repositories
                 _dbContext.Usuarios.Remove(usuario);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> ExisteEmailAsync(string email)
+        {
+            return await _dbContext.Usuarios.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _dbContext.Database.BeginTransactionAsync();
         }
     }
 }

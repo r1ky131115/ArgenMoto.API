@@ -20,33 +20,33 @@ namespace ArgenMoto.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReadDTO>>> GetFacturas()
+        public async Task<ActionResult<IEnumerable<ReadFacturaDTO>>> GetFacturas()
         {
             var facturas = await _facturaRepository.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<ReadDTO>>(facturas));
+            return Ok(_mapper.Map<IEnumerable<ReadFacturaDTO>>(facturas));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReadDTO>> GetFactura(int id)
+        public async Task<ActionResult<ReadFacturaDTO>> GetFactura(int id)
         {
             var factura = await _facturaRepository.GetByIdAsync(id);
             if (factura == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<ReadDTO>(factura));
+            return Ok(_mapper.Map<ReadFacturaDTO>(factura));
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateDTO>> CreateFactura(CreateDTO facturaDto)
+        public async Task<ActionResult<CreateFacturaDTO>> CreateFactura(CreateFacturaDTO facturaDto)
         {
             var factura = _mapper.Map<Factura>(facturaDto);
             var createdFactura = await _facturaRepository.CreateAsync(factura);
-            return CreatedAtAction(nameof(GetFactura), new { id = createdFactura.Id }, _mapper.Map<CreateDTO>(createdFactura));
+            return CreatedAtAction(nameof(GetFactura), new { id = createdFactura.Id }, _mapper.Map<CreateFacturaDTO>(createdFactura));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFactura(int id, UpdateDTO facturaDto)
+        public async Task<IActionResult> UpdateFactura(int id, UpdateFacturaDTO facturaDto)
         {
             var existingFactura = await _facturaRepository.GetByIdAsync(id);
             if (existingFactura == null)

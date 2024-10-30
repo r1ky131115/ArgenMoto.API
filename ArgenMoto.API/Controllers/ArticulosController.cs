@@ -19,34 +19,34 @@ namespace ArgenMoto.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReadDTO>>> GetArticulos()
+        [HttpGet("articulos")]
+        public async Task<ActionResult<IEnumerable<ReadArticuloDTO>>> GetArticulos()
         {
             var articulos = await _articuloRepository.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<ReadDTO>>(articulos));
+            return Ok(_mapper.Map<IEnumerable<ReadArticuloDTO>>(articulos));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReadDTO>> GetArticulo(int id)
+        public async Task<ActionResult<ReadArticuloDTO>> GetArticulo(int id)
         {
             var articulo = await _articuloRepository.GetByIdAsync(id);
             if (articulo == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<ReadDTO>(articulo));
+            return Ok(_mapper.Map<ReadArticuloDTO>(articulo));
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateDTO>> CreateArticulo(CreateDTO articuloDto)
+        public async Task<ActionResult<CreateArticuloDTO>> CreateArticulo(CreateArticuloDTO articuloDto)
         {
             var articulo = _mapper.Map<Articulo>(articuloDto);
             await _articuloRepository.CreateAsync(articulo);
-            return CreatedAtAction(nameof(GetArticulo), new { id = articulo.Id }, _mapper.Map<CreateDTO>(articulo));
+            return CreatedAtAction(nameof(GetArticulo), new { id = articulo.Id }, _mapper.Map<CreateArticuloDTO>(articulo));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateArticulo(int id, UpdateDTO articuloDto)
+        public async Task<IActionResult> UpdateArticulo(int id, UpdateArticuloDTO articuloDto)
         {
             if (id != articuloDto.IdArticulo)
             {

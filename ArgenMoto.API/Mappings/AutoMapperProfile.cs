@@ -1,5 +1,6 @@
 ﻿using ArgenMoto.Core.DTOs.Articulo;
 using ArgenMoto.Core.DTOs.Cliente;
+using ArgenMoto.Core.DTOs.Usuario;
 using ArgenMoto.Core.Entities;
 using AutoMapper;
 
@@ -9,13 +10,21 @@ namespace ArgenMoto.API.Mappings
     {
         public AutoMapperProfile()
         {
-            //Mapeo de cliente
-            CreateMap<Cliente, Core.DTOs.Cliente.ReadDTO>();
-            CreateMap<Core.DTOs.Cliente.ReadDTO, Cliente>();
+            //Mapeo de clientes
+            CreateMap<Cliente, ReadClienteDTO>();
+            CreateMap<ReadClienteDTO, Cliente>();
 
-            //Mapeo de Articulo
-            CreateMap<Articulo, Core.DTOs.Articulo.ReadDTO>();
-            CreateMap<Core.DTOs.Articulo.ReadDTO, Articulo>();
+            //Mapeo de Articulos
+            CreateMap<Articulo, ReadArticuloDTO>();
+            CreateMap<ReadArticuloDTO, Articulo>();
+
+            //Mapeo de usuarios
+            CreateMap<Usuario, ReadUsuarioDTO>(); 
+            CreateMap<ReadUsuarioDTO, Usuario>();
+            CreateMap<UpdateUsuarioDTO, Usuario>();
+
+            //Mapeo de facturas
+
         }
     }
 }

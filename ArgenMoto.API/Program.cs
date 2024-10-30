@@ -22,6 +22,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IArticuloRepository, ArticuloRepository>();
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -36,7 +38,21 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
