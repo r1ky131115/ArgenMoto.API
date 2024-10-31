@@ -1,6 +1,6 @@
 ﻿namespace ArgenMoto.Core.Entities;
 
-public partial class Usuario
+public class Usuario
 {
     public int Id { get; set; }
     public string Username { get; set; } = null!;

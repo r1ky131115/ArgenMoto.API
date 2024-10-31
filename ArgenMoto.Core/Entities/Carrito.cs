@@ -1,6 +1,6 @@
 ﻿namespace ArgenMoto.Core.Entities;
 
-public partial class Carrito
+public class Carrito
 {
     public int Id { get; set; }
     public int IdCliente { get; set; }

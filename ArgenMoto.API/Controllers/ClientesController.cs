@@ -1,8 +1,8 @@
 ﻿using ArgenMoto.Core.DTOs.Cliente;
+using ArgenMoto.Core.DTOs.Turno;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArgenMoto.API.Controllers
@@ -62,6 +62,32 @@ namespace ArgenMoto.API.Controllers
 
             await _clienteRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("turnos")]
+        public async Task<ActionResult<IEnumerable<ReadTurnoDTO>>> GetTurnos()
+        {
+            var turnos = await _clienteRepository.GetAllTurnosAsync();
+            if (turnos == null || !turnos.Any())
+            {
+                return NotFound();
+            }
+
+            var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);
+            return Ok(turnosDTO);
+        }
+
+        [HttpGet("turno")]
+        public async Task<ActionResult<IEnumerable<ReadTurnoDTO>>> GetTurnoByClienteId(int clienteId)
+        {
+            var turnos = await _clienteRepository.GetTurnosByClienteIdAsync(clienteId);
+            if (turnos == null || !turnos.Any())
+            {
+                return NotFound();
+            }
+
+            var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);
+            return Ok(turnosDTO);
         }
     }
 }

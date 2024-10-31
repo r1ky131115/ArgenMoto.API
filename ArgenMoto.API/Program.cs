@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ArgenMoto.Core.Utils;
+using ArgenMoto.API.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IArticuloRepository, ArticuloRepository>();
 builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
+builder.Services.AddScoped<ITurnoRepository, TurnoRepository>();
 
 // Configuración de PasswordHasher y JwtService
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -53,7 +56,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Configuración de AutoMapper
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // Configuración de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -80,7 +83,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
 
 // Configuración de la tubería de solicitudes HTTP
 if (app.Environment.IsDevelopment())

@@ -2,7 +2,7 @@
 
 namespace ArgenMoto.Core.Entities
 {
-    public partial class Factura
+    public class Factura
     {
         public int Id { get; set; }
         public string NumeroPedido { get; set; } = null!;

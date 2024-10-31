@@ -1,6 +1,6 @@
 ﻿namespace ArgenMoto.Core.Entities
 {
-    public partial class Cliente
+    public class Cliente
     {
         public int Id { get; set; }
         public int? IdUsuario { get; set; }

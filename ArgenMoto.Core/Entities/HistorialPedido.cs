@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArgenMoto.Core.Entities;
 
-public partial class HistorialPedido
+public class HistorialPedido
 {
     public int Id { get; set; }
     public int IdCliente { get; set; }

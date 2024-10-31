@@ -45,10 +45,30 @@ namespace ArgenMoto.Infrastructure.Repositories
             return await _dbContext.Clientes.ToListAsync();
         }
 
+        public async Task<IEnumerable<TurnosPreventa>> GetAllTurnosAsync()
+        {
+            return await _dbContext.TurnosPreventa
+                .Include(t => t.Cliente)
+                .Include(t => t.Articulo)
+                .Include(t => t.Tecnico)
+                .ToListAsync();
+        }
+
         public async Task<Cliente> GetByIdAsync(int id)
         {
             return await _dbContext.Clientes.FindAsync(id);
         }
+
+        public async Task<IEnumerable<TurnosPreventa>> GetTurnosByClienteIdAsync(int clienteId)
+        {
+            return await _dbContext.TurnosPreventa
+                .Where(t => t.Cliente.Id == clienteId)
+                .Include(t => t.Cliente)
+                .Include(t => t.Articulo)
+                .Include(t => t.Tecnico)
+                .ToListAsync();
+        }
+
 
         public async Task UpdateAsync(Cliente cliente)
         {

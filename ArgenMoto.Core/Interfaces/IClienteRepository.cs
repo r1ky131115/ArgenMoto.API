@@ -10,5 +10,7 @@ namespace ArgenMoto.Core.Interfaces
         Task UpdateAsync(Cliente cliente);
         Task DeleteAsync(int id);
         Task<bool> ExisteDocumentoAsync(string numeroDocumento);
+        Task<IEnumerable<TurnosPreventa>> GetAllTurnosAsync();
+        Task<IEnumerable<TurnosPreventa>> GetTurnosByClienteIdAsync(int clienteId);
     }
 }
