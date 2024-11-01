@@ -1,4 +1,5 @@
 ﻿using ArgenMoto.Core.DTOs.Articulo;
+using ArgenMoto.Core.DTOs.Carrito;
 using ArgenMoto.Core.DTOs.Cliente;
 using ArgenMoto.Core.DTOs.Proveedor;
 using ArgenMoto.Core.DTOs.Tecnico;
@@ -37,7 +38,7 @@ namespace ArgenMoto.API.Mappings
             // Mapeos de tecnico
             CreateMap<Tecnico, ReadTecnicoDTO>();
 
-            // Mapea de TurnosPreventa a ReadTurnoDTO
+            // Mapeos de TurnosPreventa a ReadTurnoDTO
             CreateMap<TurnosPreventa, ReadTurnoDTO>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Cliente, opt => opt.MapFrom(src => src.Cliente != null ? src.Cliente : null))
@@ -49,6 +50,22 @@ namespace ArgenMoto.API.Mappings
 
             CreateMap<UpdateTurnoDTO, TurnosPreventa>();
             CreateMap<CreateTurnoDTO, TurnosPreventa>();
+
+            //Mapeos de Carrito
+            CreateMap<Carrito, CarritoDto>()
+            .ForMember(dest => dest.Detalles, opt => opt.MapFrom(src => src.CarritoDetalles));
+
+            CreateMap<CarritoDetalle, CarritoDetalleDto>()
+                .ForMember(dest => dest.Articulo, opt => opt.MapFrom(src => new ArticuloDto
+                {
+                    Id = src.IdArticulo,
+                    Descripcion = src.Articulo.Descripcion, 
+                    Precio = src.Articulo.Precio,
+                    Marca = src.Articulo.Marca,
+                    Modelo = src.Articulo.Modelo,
+                    Año = src.Articulo.Año,
+                    Cilindrada = src.Articulo.Cilindrada
+                }));
         }
     }
 }

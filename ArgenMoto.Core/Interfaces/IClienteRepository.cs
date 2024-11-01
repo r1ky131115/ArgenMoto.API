@@ -14,5 +14,6 @@ namespace ArgenMoto.Core.Interfaces
         Task<IEnumerable<TurnosPreventa>> GetTurnosByClienteIdAsync(int clienteId);
         Task<Cliente> GetClienteConTurnosAsync(int id);
         Task UpdateTurnoAsync(TurnosPreventa turno);
+        Task<Carrito> GetCarritoByClienteIdAsync(int idCliente);
     }
 }

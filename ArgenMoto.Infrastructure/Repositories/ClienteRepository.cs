@@ -59,6 +59,16 @@ namespace ArgenMoto.Infrastructure.Repositories
             return await _dbContext.Clientes.FindAsync(id);
         }
 
+        public async Task<Carrito> GetCarritoByClienteIdAsync(int idCliente)
+        {
+            return await _dbContext.Carritos
+            .Where(c => c.IdCliente == idCliente)
+            .Include(c => c.Cliente)
+            .Include(c => c.CarritoDetalles)
+                .ThenInclude(cd => cd.Articulo)
+            .FirstOrDefaultAsync();
+        }
+
         public async Task<Cliente> GetClienteConTurnosAsync(int clienteId)
         {
             return await _dbContext.Clientes

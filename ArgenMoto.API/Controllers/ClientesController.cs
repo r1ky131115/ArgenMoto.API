@@ -1,4 +1,5 @@
-﻿using ArgenMoto.Core.DTOs.Cliente;
+﻿using ArgenMoto.Core.DTOs.Carrito;
+using ArgenMoto.Core.DTOs.Cliente;
 using ArgenMoto.Core.DTOs.Turno;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
@@ -12,7 +13,7 @@ namespace ArgenMoto.API.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;
-        ITurnoRepository _turnoRepository;
+        private readonly ITurnoRepository _turnoRepository;
         private readonly IMapper _mapper;
 
         public ClientesController(IClienteRepository clienteRepository, ITurnoRepository turnoRepository, IMapper mapper)
@@ -161,6 +162,22 @@ namespace ArgenMoto.API.Controllers
                 return StatusCode(500, $"Error al crear el turno: {ex.Message}");
             }
         }
+
+        [HttpGet("carrito/{idCliente}")]
+        public async Task<ActionResult<IEnumerable<CarritoDto>>> GetCarritoByClienteId(int idCliente)
+        {
+            var carrito = await _clienteRepository.GetCarritoByClienteIdAsync(idCliente);
+
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+
+            var carritoDetalle = _mapper.Map<CarritoDto>(carrito);
+
+            return Ok(carritoDetalle);
+        }
+
 
     }
 }
