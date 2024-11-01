@@ -20,9 +20,9 @@ namespace ArgenMoto.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReadFacturaDTO>>> GetFacturas()
+        public async Task<ActionResult<IEnumerable<ReadFacturaDTO>>> GetFacturasByUserId(int idCliente)
         {
-            var facturas = await _facturaRepository.GetAllAsync();
+            var facturas = await _facturaRepository.GetAllByUserIdAsync(idCliente);
             return Ok(_mapper.Map<IEnumerable<ReadFacturaDTO>>(facturas));
         }
 

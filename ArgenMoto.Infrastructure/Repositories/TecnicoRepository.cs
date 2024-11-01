@@ -47,5 +47,4 @@ namespace ArgenMoto.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
     }
-
 }

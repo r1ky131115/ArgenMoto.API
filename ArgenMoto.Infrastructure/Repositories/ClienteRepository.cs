@@ -59,6 +59,14 @@ namespace ArgenMoto.Infrastructure.Repositories
             return await _dbContext.Clientes.FindAsync(id);
         }
 
+        public async Task<Cliente> GetClienteConTurnosAsync(int clienteId)
+        {
+            return await _dbContext.Clientes
+                .Include(c => c.TurnosPreventa)
+                .FirstOrDefaultAsync(c => c.Id == clienteId);
+        }
+
+
         public async Task<IEnumerable<TurnosPreventa>> GetTurnosByClienteIdAsync(int clienteId)
         {
             return await _dbContext.TurnosPreventa
@@ -81,6 +89,20 @@ namespace ArgenMoto.Infrastructure.Repositories
             else
             {
                 throw new KeyNotFoundException($"Cliente con ID {cliente.Id} no encontrado.");
+            }
+        }
+
+        public async Task UpdateTurnoAsync(TurnosPreventa turno)
+        {
+            var existingTurno = await _dbContext.TurnosPreventa.FindAsync(turno.Id);
+            if (existingTurno != null)
+            {
+                _dbContext.Entry(existingTurno).CurrentValues.SetValues(turno);
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Turno con ID {turno.Id} no encontrado.");
             }
         }
     }

@@ -1,12 +1,16 @@
-﻿namespace ArgenMoto.Core.DTOs.Turno
+﻿using ArgenMoto.Core.DTOs.Tecnico;
+
+namespace ArgenMoto.Core.DTOs.Turno
 {
     public class ReadTurnoDTO
     {
+        public int Id { get; set; }
         public ReadBasicClienteDTO Cliente { get; set; }
         public ReadBasicArticuloDTO Articulo { get; set; }
-        public ReadBasicTecnicoDTO Tecnico { get; set; }
-        public DateOnly Fecha { get; set; }
+        public ReadTecnicoDTO Tecnico { get; set; }
+        public DateTime Fecha { get; set; }
         public string? Hora { get; set; }
+        public string? Estado { get; set; }
     }
 
     public class ReadBasicClienteDTO
@@ -21,16 +25,9 @@
     public class ReadBasicArticuloDTO
     {
         public int Id { get; set; }
-        public string CodigoArticulo { get; set; }
+        public string Codigo { get; set; }
         public string Descripcion { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }
-    }
-
-    public class ReadBasicTecnicoDTO
-    {
-        public int Id { get; set; }
-        public string Nombre { get; set; } = null!;
-        public string? Especialidad { get; set; }
     }
 }

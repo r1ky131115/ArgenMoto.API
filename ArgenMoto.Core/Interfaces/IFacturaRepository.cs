@@ -6,7 +6,7 @@ namespace ArgenMoto.Core.Interfaces
 {
     public interface IFacturaRepository
     {
-        Task<IEnumerable<Factura>> GetAllAsync();
+        Task<IEnumerable<Factura>> GetAllByUserIdAsync(int id);
         Task<Factura> GetByIdAsync(int id);
         Task<Factura> CreateAsync(Factura factura);
         Task UpdateAsync(Factura factura);

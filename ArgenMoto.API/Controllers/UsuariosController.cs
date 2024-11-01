@@ -125,7 +125,7 @@ namespace ArgenMoto.API.Controllers
                 }
 
                 var token = _jwtService.GenerateToken(usuario.Username);
-                return Ok(new { token });
+                return Ok(new { token, usuario, usuario.Rol });
             }
             catch (Exception ex)
             {

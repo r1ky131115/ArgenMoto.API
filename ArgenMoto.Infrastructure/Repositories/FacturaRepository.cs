@@ -35,9 +35,9 @@ namespace ArgenMoto.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Factura>> GetAllAsync()
+        public async Task<IEnumerable<Factura>> GetAllByUserIdAsync(int idCliente)
         {
-            return await _context.Facturas.ToListAsync();
+            return await _context.Facturas.Where(f => f.IdCliente == idCliente).ToListAsync();
         }
 
         public async Task<Factura> GetByIdAsync(int id)

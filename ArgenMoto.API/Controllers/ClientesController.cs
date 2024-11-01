@@ -12,11 +12,13 @@ namespace ArgenMoto.API.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;
+        ITurnoRepository _turnoRepository;
         private readonly IMapper _mapper;
 
-        public ClientesController(IClienteRepository clienteRepository, IMapper mapper)
+        public ClientesController(IClienteRepository clienteRepository, ITurnoRepository turnoRepository, IMapper mapper)
         {
             _clienteRepository = clienteRepository;
+            _turnoRepository = turnoRepository;
             _mapper = mapper;
         }
 
@@ -77,7 +79,7 @@ namespace ArgenMoto.API.Controllers
             return Ok(turnosDTO);
         }
 
-        [HttpGet("turno")]
+        [HttpGet("turno/{clienteId}")]
         public async Task<ActionResult<IEnumerable<ReadTurnoDTO>>> GetTurnoByClienteId(int clienteId)
         {
             var turnos = await _clienteRepository.GetTurnosByClienteIdAsync(clienteId);
@@ -89,5 +91,76 @@ namespace ArgenMoto.API.Controllers
             var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);
             return Ok(turnosDTO);
         }
+
+        [HttpDelete("remove-turno")]
+        public async Task<IActionResult> DeleteTurnoByClienteId([FromBody] DeleteTurnoDTO request)
+        {
+            var cliente = await _clienteRepository.GetClienteConTurnosAsync(request.Cliente_Id);
+            if (cliente == null)
+            {
+                return NotFound($"Cliente con ID {request.Cliente_Id} no encontrado.");
+            }
+
+            var turno = cliente.TurnosPreventa.FirstOrDefault(t => t.Id == request.Turno_Id);
+            if (turno == null)
+            {
+                return NotFound($"Turno con ID {request.Turno_Id} no encontrado para el cliente con ID {request.Cliente_Id}.");
+            }
+
+            cliente.TurnosPreventa.Remove(turno);
+
+            await _clienteRepository.UpdateAsync(cliente);
+
+            return NoContent(); // Retorna 204 sin contenido indicando que fue exitoso
+        }
+
+        [HttpPut("update-turno/{turnoId}")]
+        public async Task<IActionResult> UpdateTurno(int turnoId, [FromBody] UpdateTurnoDTO turnoDto)
+        {
+            if (turnoId != turnoDto.Id)
+            {
+                return BadRequest("El ID del turno en la URL no coincide con el ID en el cuerpo de la solicitud.");
+            }
+
+            // Mapear el DTO a la entidad TurnosPreventa
+            var turno = _mapper.Map<TurnosPreventa>(turnoDto);
+
+            try
+            {
+                // Actualizar el turno en el repositorio
+                await _clienteRepository.UpdateTurnoAsync(turno);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost("create-turno")]
+        public async Task<IActionResult> CreateTurno([FromBody] CreateTurnoDTO turnoDto)
+        {
+            // Validación de los datos recibidos
+            if (turnoDto == null)
+            {
+                return BadRequest("Los datos del turno son inválidos.");
+            }
+
+            // Mapear el DTO a la entidad TurnosPreventa
+            var turno = _mapper.Map<TurnosPreventa>(turnoDto);
+
+            try
+            {
+                // Crear el turno en el repositorio
+                await _turnoRepository.CreateAsync(turno);
+                return CreatedAtAction(nameof(GetTurnoByClienteId), new { clienteId = turnoDto.IdCliente }, turno);
+            }
+            catch (Exception ex)
+            {
+                // Manejar posibles excepciones
+                return StatusCode(500, $"Error al crear el turno: {ex.Message}");
+            }
+        }
+
     }
 }
