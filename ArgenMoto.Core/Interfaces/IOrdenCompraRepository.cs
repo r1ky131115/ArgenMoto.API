@@ -1,6 +1,4 @@
 ﻿using ArgenMoto.Core.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ArgenMoto.Core.Interfaces
 {
@@ -11,5 +9,6 @@ namespace ArgenMoto.Core.Interfaces
         Task<OrdenesCompra> CreateAsync(OrdenesCompra ordenCompra);
         Task UpdateAsync(OrdenesCompra ordenCompra);
         Task DeleteAsync(int id);
+        Task<int> GetNextNumeroOrden();
     }
 }

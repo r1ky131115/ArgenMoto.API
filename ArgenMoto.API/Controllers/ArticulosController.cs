@@ -70,5 +70,17 @@ namespace ArgenMoto.API.Controllers
             await _articuloRepository.DeleteAsync(articulo.Id);
             return Ok();
         }
+
+        [HttpGet("proveedor/{id}")]
+        public async Task<ActionResult<IEnumerable<ReadArticuloDTO>>> GetArticulosPorProveedor(int id)
+        {
+            var articulos = await _articuloRepository.GetByProveedorIdAsync(id);
+            if (articulos == null || !articulos.Any())
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<ReadArticuloDTO>>(articulos));
+        }
+
     }
 }

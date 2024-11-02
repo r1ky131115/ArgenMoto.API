@@ -73,7 +73,7 @@ namespace ArgenMoto.API.Controllers
             var turnos = await _clienteRepository.GetAllTurnosAsync();
             if (turnos == null || !turnos.Any())
             {
-                return NotFound();
+                return NoContent();
             }
 
             var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);

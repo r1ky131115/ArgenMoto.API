@@ -2,9 +2,9 @@
 
 namespace ArgenMoto.Core.DTOs.OrdenCompraDetalle
 {
-    public class ReadOrdenCompraDetalleDTO
+    public class OrdenCompraDetalleCreateDto
     {
-        public ICollection<ReadArticuloDTO> Articulos { get; set; }
+        public int IdArticulo { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
     }

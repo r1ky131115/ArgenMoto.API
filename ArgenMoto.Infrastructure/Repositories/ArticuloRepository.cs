@@ -45,6 +45,14 @@ namespace ArgenMoto.Infrastructure.Repositories
             return await _context.Articulos.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Articulo>> GetByProveedorIdAsync(int proveedorId)
+        {
+            return await _context.Articulos
+                .Where(a => a.IdProveedor == proveedorId)
+                .ToListAsync();
+        }
+
+
         public async Task UpdateAsync(Articulo articulo)
         {
             var existingArticulo = await _context.Articulos.FindAsync(articulo.Id);

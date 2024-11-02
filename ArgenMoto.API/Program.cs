@@ -34,6 +34,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 builder.Services.AddScoped<ITurnoRepository, TurnoRepository>();
 builder.Services.AddScoped<ITecnicoRepository, TecnicoRepository>();
+builder.Services.AddScoped<IOrdenCompraRepository, OrdenCompraRepository>();
 
 // Configuración de PasswordHasher y JwtService
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();

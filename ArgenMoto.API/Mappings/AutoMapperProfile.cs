@@ -1,6 +1,8 @@
 ﻿using ArgenMoto.Core.DTOs.Articulo;
 using ArgenMoto.Core.DTOs.Carrito;
 using ArgenMoto.Core.DTOs.Cliente;
+using ArgenMoto.Core.DTOs.OrdenCompra;
+using ArgenMoto.Core.DTOs.OrdenCompraDetalle;
 using ArgenMoto.Core.DTOs.Proveedor;
 using ArgenMoto.Core.DTOs.Tecnico;
 using ArgenMoto.Core.DTOs.Turno;
@@ -74,6 +76,19 @@ namespace ArgenMoto.API.Mappings
                     Año = src.Articulo.Año,
                     Cilindrada = src.Articulo.Cilindrada
                 }));
+
+            //Mapeo orden de compra y detalle orden de compra
+            CreateMap<OrdenCompraCreateDto, OrdenesCompra>()
+            .ForMember(dest => dest.Fecha, opt => opt.MapFrom(src => DateOnly.FromDateTime(DateTime.Now)))
+            .ForMember(dest => dest.Numero, opt => opt.Ignore());
+
+            CreateMap<OrdenCompraDetalleCreateDto, OrdenCompraDetalle>();
+
+            CreateMap<OrdenesCompra, OrdenCompraResponseDto>();
+            CreateMap<OrdenCompraDetalle, OrdenCompraDetalleResponseDto>()
+                .ForMember(dest => dest.CodigoArticulo, opt => opt.MapFrom(src => src.Articulo.Codigo))
+                .ForMember(dest => dest.DescripcionArticulo, opt => opt.MapFrom(src => src.Articulo.Descripcion))
+                .ForMember(dest => dest.Subtotal, opt => opt.MapFrom(src => src.Precio * src.Cantidad));
         }
     }
 }

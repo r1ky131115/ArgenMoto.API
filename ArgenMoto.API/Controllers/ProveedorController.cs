@@ -18,7 +18,7 @@ namespace ArgenMoto.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("proveedores")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ReadProveedorDTO>>> GetProveedores()
         {
             var proveedores = await _proveedorRepository.GetAllAsync();
@@ -31,9 +31,10 @@ namespace ArgenMoto.API.Controllers
             var proveedor = await _proveedorRepository.GetByIdAsync(id);
             if (proveedor == null)
             {
-                return NotFound();
+                return NotFound(new { Message = $"Proveedor con ID {id} no encontrado." });
             }
-            return Ok(_mapper.Map<ReadProveedorDTO>(proveedor));
+            var proveedorDto = _mapper.Map<ReadProveedorDTO>(proveedor);
+            return Ok(proveedorDto);
         }
     }
 }

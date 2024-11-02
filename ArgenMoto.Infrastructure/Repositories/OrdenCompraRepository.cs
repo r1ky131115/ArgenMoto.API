@@ -14,38 +14,85 @@ namespace ArgenMoto.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<IEnumerable<OrdenesCompra>> GetAllAsync()
+        {
+            return await _context.OrdenesCompras
+                .Include(o => o.Proveedor)
+                .Include(o => o.OrdenCompraDetalles)
+                    .ThenInclude(d => d.Articulo)
+                .OrderByDescending(o => o.Fecha)
+                .ToListAsync();
+        }
+
+        public async Task<OrdenesCompra> GetByIdAsync(int id)
+        {
+            return await _context.OrdenesCompras
+                .Include(o => o.Proveedor)
+                .Include(o => o.OrdenCompraDetalles)
+                    .ThenInclude(d => d.Articulo)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
         public async Task<OrdenesCompra> CreateAsync(OrdenesCompra ordenCompra)
         {
-            await _context.OrdenesCompras.AddAsync(ordenCompra);
-            await _context.SaveChangesAsync();
-            return ordenCompra;
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await _context.OrdenesCompras.AddAsync(ordenCompra);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return ordenCompra;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task UpdateAsync(OrdenesCompra ordenCompra)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                _context.OrdenesCompras.Update(ordenCompra);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
             var ordenCompra = await _context.OrdenesCompras.FindAsync(id);
-            if (ordenCompra != null)
+            if (ordenCompra == null) return;
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
                 _context.OrdenesCompras.Remove(ordenCompra);
                 await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
             }
         }
 
-        public async Task<IEnumerable<OrdenesCompra>> GetAllAsync()
+        public async Task<int> GetNextNumeroOrden()
         {
-            return await _context.OrdenesCompras.ToListAsync();
-        }
+            var ultimaOrden = await _context.OrdenesCompras
+                .OrderByDescending(o => o.Id)
+                .FirstOrDefaultAsync();
 
-        public async Task<OrdenesCompra> GetByIdAsync(int id)
-        {
-            return await _context.OrdenesCompras.FindAsync(id);
-        }
-
-        public async Task UpdateAsync(OrdenesCompra ordenCompra)
-        {
-            _context.OrdenesCompras.Update(ordenCompra);
-            await _context.SaveChangesAsync();
+            return (ultimaOrden?.Id ?? 0) + 1;
         }
     }
-
 }
