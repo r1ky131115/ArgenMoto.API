@@ -41,17 +41,17 @@ namespace ArgenMoto.API.Controllers
             return Ok(_mapper.Map<ReadClienteDTO>(cliente));
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateCliente(int id, UpdateClienteDTO clienteDto)
         {
-            if (id != clienteDto.IdCliente)
+            if (id != clienteDto.Id)
             {
                 return BadRequest();
             }
 
             var cliente = _mapper.Map<Cliente>(clienteDto);
             await _clienteRepository.UpdateAsync(cliente);
-            return NoContent();
+            return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id }, cliente);
         }
 
         [HttpDelete("{id}")]
@@ -86,7 +86,7 @@ namespace ArgenMoto.API.Controllers
             var turnos = await _clienteRepository.GetTurnosByClienteIdAsync(clienteId);
             if (turnos == null || !turnos.Any())
             {
-                return NotFound();
+                return NoContent();
             }
 
             var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);
@@ -108,11 +108,26 @@ namespace ArgenMoto.API.Controllers
                 return NotFound($"Turno con ID {request.Turno_Id} no encontrado para el cliente con ID {request.Cliente_Id}.");
             }
 
-            cliente.TurnosPreventa.Remove(turno);
-
-            await _clienteRepository.UpdateAsync(cliente);
+            _turnoRepository.DeleteAsync(turno.Id);
 
             return NoContent(); // Retorna 204 sin contenido indicando que fue exitoso
+        }
+
+        [HttpDelete("remove-turno-for-admin/{id}")]
+        public async Task<ActionResult<IEnumerable<ReadTurnoDTO>>> DeleteTurnoByClienteId(int id)
+        {
+            var turno = await _turnoRepository.GetByIdAsync(id);
+            if (turno == null)
+            {
+                return NotFound($"Turno con ID {id} no encontrado.");
+            }
+
+            // Elimina el turno
+            await _turnoRepository.DeleteAsync(turno.Id);
+            var turnosActualizados = await _clienteRepository.GetAllTurnosAsync();
+            var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnosActualizados);
+
+            return Ok(turnosDTO);
         }
 
         [HttpPut("update-turno/{turnoId}")]
@@ -137,6 +152,38 @@ namespace ArgenMoto.API.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPut("update-turno-estado/{turnoId}")]
+        public async Task<IActionResult> UpdateTurnoEstado(int turnoId)
+        {
+            try
+            {
+                var turno = await _turnoRepository.GetByIdAsync(turnoId);
+
+                if (turno == null)
+                {
+                    return NotFound("El turno con el ID especificado no fue encontrado.");
+                }
+
+                turno.Estado = turno.Estado == "Pendiente" ? "Finalizado" : "Pendiente";
+
+                await _turnoRepository.UpdateAsync(turno);
+
+                // Obtener la lista de turnos actualizada y retornarla
+                var turnos = await _clienteRepository.GetAllTurnosAsync();
+                var turnosDTO = _mapper.Map<IEnumerable<ReadTurnoDTO>>(turnos);
+                return Ok(turnosDTO);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al actualizar el turno: {ex.Message}");
+            }
+        }
+
 
         [HttpPost("create-turno")]
         public async Task<IActionResult> CreateTurno([FromBody] CreateTurnoDTO turnoDto)
@@ -177,7 +224,5 @@ namespace ArgenMoto.API.Controllers
 
             return Ok(carritoDetalle);
         }
-
-
     }
 }

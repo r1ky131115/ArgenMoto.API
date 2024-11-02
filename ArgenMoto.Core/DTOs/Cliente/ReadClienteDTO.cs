@@ -5,6 +5,7 @@ namespace ArgenMoto.Core.DTOs.Cliente
     public class ReadClienteDTO
     {
         public int Id { get; set; }
+        public int IdUsuario { get; set; }
         public string TipoDocumento { get; set; }
         public string NumeroDocumento { get; set; }
         public string? RazonSocial { get; set; }

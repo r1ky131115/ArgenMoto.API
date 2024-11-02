@@ -22,7 +22,10 @@ namespace ArgenMoto.Infrastructure.Repositories
 
         public async Task<Usuario?> GetByIdAsync(int id)
         {
-            return await _dbContext.Usuarios.FindAsync(id);
+            return await _dbContext.Usuarios
+                .Where(u => u.Id == id)
+                .Include(c => c.Cliente)
+                .FirstAsync();
         }
 
         public async Task<Usuario?> GetByUsernameAsync(string username)
@@ -65,7 +68,10 @@ namespace ArgenMoto.Infrastructure.Repositories
 
         public async Task<Usuario?> ObtenerPorEmailAsync(string email)
         {
-            return await _dbContext.Usuarios?.FirstOrDefaultAsync(u => u.Email == email);
+            return await _dbContext.Usuarios?
+                .Where(u => u.Email == email)
+                .Include(c => c.Cliente)
+                .FirstOrDefaultAsync();
         }
     }
 }

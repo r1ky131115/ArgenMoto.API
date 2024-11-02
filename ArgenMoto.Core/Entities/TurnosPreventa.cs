@@ -7,11 +7,10 @@ namespace ArgenMoto.Core.Entities
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public string? Hora { get; set; }
-        public string? NumeroTurno { get; set; } = null;
         public int IdCliente { get; set; }
         public int IdArticulo { get; set; }
         public int IdTecnico { get; set; }
-        public byte Estado { get; set; } = 0;
+        public string Estado { get; set; } = "Pendiente";
 
         public virtual Articulo Articulo { get; set; } = null!;
         public virtual Cliente Cliente { get; set; } = null!;

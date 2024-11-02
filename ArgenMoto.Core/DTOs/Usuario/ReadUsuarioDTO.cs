@@ -3,6 +3,8 @@
     public class ReadUsuarioDTO
     {
         public int Id { get; set; }
+        public int Cliente_Id { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; } = null!;
         public string PasswordHash { get; set; } = null!;
         public string Rol { get; set; } = null!;

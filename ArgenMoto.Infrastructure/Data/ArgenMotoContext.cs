@@ -1,4 +1,5 @@
 ﻿using ArgenMoto.Core.Entities;
+using ArgenMoto.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArgenMoto.Infrastructure.Data
@@ -527,10 +528,11 @@ namespace ArgenMoto.Infrastructure.Data
                 entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
                 entity.Property(e => e.IdTecnico).HasColumnName("id_tecnico");
                 entity.Property(e => e.Estado).HasColumnName("estado");
-                entity.Property(e => e.NumeroTurno)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("numero_turno");
+                //entity.Property(e => e.NumeroTurno)
+                //    .HasMaxLength(50)
+                //    .IsUnicode(false)
+                //    .HasColumnName("numero_turno")
+                //    .HasConversion(new NullToDbNullConverter());
 
                 entity.HasOne(d => d.Articulo).WithMany(p => p.TurnosPreventa)
                     .HasForeignKey(d => d.IdArticulo)

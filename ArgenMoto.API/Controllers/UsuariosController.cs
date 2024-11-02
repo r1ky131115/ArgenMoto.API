@@ -118,14 +118,17 @@ namespace ArgenMoto.API.Controllers
         {
             try
             {
-                var usuario = await _usuarioRepository.ObtenerPorEmailAsync(loginDto.Email);
-                if (usuario == null || !_passwordHasher.VerifyPassword(loginDto.Password, usuario.PasswordHash))
+                var user = await _usuarioRepository.ObtenerPorEmailAsync(loginDto.Email);
+                if (user == null || !_passwordHasher.VerifyPassword(loginDto.Password, user.PasswordHash))
                 {
                     return Unauthorized(new { mensaje = "Correo o contraseña incorrectos" });
                 }
 
+                var usuario = _mapper.Map<ReadUsuarioDTO>(user);
                 var token = _jwtService.GenerateToken(usuario.Username);
-                return Ok(new { token, usuario, usuario.Rol });
+
+                string cliente_Id = usuario.Cliente_Id.ToString();
+                return Ok(new { token, usuario, cliente_Id, usuario.Rol });
             }
             catch (Exception ex)
             {

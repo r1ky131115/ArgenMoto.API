@@ -18,6 +18,9 @@ namespace ArgenMoto.API.Mappings
             CreateMap<Cliente, ReadClienteDTO>();
             CreateMap<ReadClienteDTO, Cliente>();
             CreateMap<Cliente, ReadBasicClienteDTO>();
+            CreateMap<Cliente, UpdateClienteDTO>();
+            CreateMap<UpdateClienteDTO, Cliente>();
+
 
             //Mapeo de Articulos
             CreateMap<Articulo, ReadArticuloDTO>();
@@ -25,7 +28,12 @@ namespace ArgenMoto.API.Mappings
             CreateMap<Articulo, ReadBasicArticuloDTO>();
 
             //Mapeo de usuarios
-            CreateMap<Usuario, ReadUsuarioDTO>(); 
+            CreateMap<Usuario, ReadUsuarioDTO>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src =>
+                src.Cliente != null ? $"{src.Cliente.Nombre} {src.Cliente.Apellido}" : string.Empty))
+            .ForMember(dest => dest.Cliente_Id, opt => opt.MapFrom(src => src.Cliente != null ? src.Cliente.Id : 0));
+
+
             CreateMap<ReadUsuarioDTO, Usuario>();
             CreateMap<UpdateUsuarioDTO, Usuario>();
 
@@ -46,7 +54,7 @@ namespace ArgenMoto.API.Mappings
             .ForMember(dest => dest.Tecnico, opt => opt.MapFrom(src => src.Tecnico != null ? src.Tecnico : null))
             .ForMember(dest => dest.Fecha, opt => opt.MapFrom(src => src.Fecha))
             .ForMember(dest => dest.Hora, opt => opt.MapFrom(src => src.Hora))
-            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado == 0 ? "Pendiente" : "Finalizado"));
+            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado));
 
             CreateMap<UpdateTurnoDTO, TurnosPreventa>();
             CreateMap<CreateTurnoDTO, TurnosPreventa>();
