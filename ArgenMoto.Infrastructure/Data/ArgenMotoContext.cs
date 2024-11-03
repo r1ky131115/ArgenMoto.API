@@ -373,9 +373,6 @@ namespace ArgenMoto.Infrastructure.Data
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("numero");
-                entity.Property(e => e.PrecioMario)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("precio_mario");
                 entity.Property(e => e.PrecioReal)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("precio_real");

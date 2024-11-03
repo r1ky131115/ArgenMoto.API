@@ -10,7 +10,6 @@
         public string? Domicilio { get; set; }
         public string? Localidad { get; set; }
         public string? Provincia { get; set; }
-        public decimal? PrecioMario { get; set; }
         public string? Descripcion { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioTotal { get; set; }

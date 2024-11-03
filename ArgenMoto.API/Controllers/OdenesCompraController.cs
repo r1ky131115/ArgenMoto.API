@@ -88,23 +88,24 @@ namespace ArgenMoto.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, OrdenCompraCreateDto ordenCompraDto)
+        [HttpPut]
+        public async Task<IActionResult> Update(OrdenCompraUpdateEstatus ordenCompra)
         {
             try
             {
-                var existingOrden = await _ordenCompraRepository.GetByIdAsync(id);
+                var existingOrden = await _ordenCompraRepository.GetByIdAsync(ordenCompra.Id);
                 if (existingOrden == null)
-                    return NotFound($"Orden de compra con ID {id} no encontrada");
+                    return NotFound($"Orden de compra con ID {ordenCompra.Id} no encontrada");
 
-                _mapper.Map(ordenCompraDto, existingOrden);
+                existingOrden.Estado = ordenCompra.Estado;
+
                 await _ordenCompraRepository.UpdateAsync(existingOrden);
 
                 return NoContent();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar la orden de compra {OrdenId}", id);
+                _logger.LogError(ex, "Error al actualizar la orden de compra {OrdenId}", ordenCompra.Id);
                 return StatusCode(500, "Error interno del servidor");
             }
         }
