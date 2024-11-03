@@ -10,6 +10,7 @@ namespace ArgenMoto.Core.DTOs.Turno
         public ReadTecnicoDTO Tecnico { get; set; }
         public DateTime Fecha { get; set; }
         public string? Hora { get; set; }
+        public string NumeroTurno { get; set; }
         public string? Estado { get; set; }
     }
 

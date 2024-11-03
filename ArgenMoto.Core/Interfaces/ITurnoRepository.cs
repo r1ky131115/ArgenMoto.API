@@ -1,6 +1,4 @@
 ﻿using ArgenMoto.Core.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ArgenMoto.Core.Interfaces
 {
@@ -11,5 +9,6 @@ namespace ArgenMoto.Core.Interfaces
         Task<TurnosPreventa> CreateAsync(TurnosPreventa turno);
         Task UpdateAsync(TurnosPreventa turno);
         Task DeleteAsync(int id);
+        Task<int> GetNextNumeroTurno();
     }
 }

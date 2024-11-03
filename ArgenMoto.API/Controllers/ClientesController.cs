@@ -3,6 +3,7 @@ using ArgenMoto.Core.DTOs.Cliente;
 using ArgenMoto.Core.DTOs.Turno;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
+using ArgenMoto.Infrastructure.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -196,6 +197,9 @@ namespace ArgenMoto.API.Controllers
 
             // Mapear el DTO a la entidad TurnosPreventa
             var turno = _mapper.Map<TurnosPreventa>(turnoDto);
+
+
+            turno.NumeroTurno = $"T-{DateTime.Now:yyyyMMdd}-{await _turnoRepository.GetNextNumeroTurno()}";
 
             try
             {

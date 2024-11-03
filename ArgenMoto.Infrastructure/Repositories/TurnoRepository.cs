@@ -41,6 +41,15 @@ namespace ArgenMoto.Infrastructure.Repositories
             return await _context.TurnosPreventa.FindAsync(id);
         }
 
+        public async Task<int> GetNextNumeroTurno()
+        {
+            var ultimaOrden = await _context.TurnosPreventa
+                .OrderByDescending(o => o.Id)
+                .FirstOrDefaultAsync();
+
+            return (ultimaOrden?.Id ?? 0) + 1;
+        }
+
         public async Task UpdateAsync(TurnosPreventa turno)
         {
             _context.TurnosPreventa.Update(turno);

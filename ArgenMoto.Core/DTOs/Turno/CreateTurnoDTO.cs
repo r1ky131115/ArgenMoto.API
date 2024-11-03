@@ -11,6 +11,7 @@ namespace ArgenMoto.Core.DTOs.Turno
         public int IdCliente { get; set; }
         public int IdArticulo { get; set; }
         public int IdTecnico { get; set; }
+        public string NumeroTurno { get; set; }
         public DateTime Fecha { get; set; }
         public string? Hora { get; set; }
     }

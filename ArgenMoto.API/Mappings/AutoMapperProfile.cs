@@ -56,7 +56,8 @@ namespace ArgenMoto.API.Mappings
             .ForMember(dest => dest.Tecnico, opt => opt.MapFrom(src => src.Tecnico != null ? src.Tecnico : null))
             .ForMember(dest => dest.Fecha, opt => opt.MapFrom(src => src.Fecha))
             .ForMember(dest => dest.Hora, opt => opt.MapFrom(src => src.Hora))
-            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado));
+            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado))
+            .ForMember(dest => dest.NumeroTurno, opt => opt.MapFrom(src => src.NumeroTurno));
 
             CreateMap<UpdateTurnoDTO, TurnosPreventa>();
             CreateMap<CreateTurnoDTO, TurnosPreventa>();

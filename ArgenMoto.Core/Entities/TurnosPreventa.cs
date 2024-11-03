@@ -11,6 +11,7 @@ namespace ArgenMoto.Core.Entities
         public int IdArticulo { get; set; }
         public int IdTecnico { get; set; }
         public string Estado { get; set; } = "Pendiente";
+        public string NumeroTurno { get; set; }
 
         public virtual Articulo Articulo { get; set; } = null!;
         public virtual Cliente Cliente { get; set; } = null!;
