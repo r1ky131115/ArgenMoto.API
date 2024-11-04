@@ -11,6 +11,6 @@ namespace ArgenMoto.Core.DTOs.Articulo
         public string Marca { get; set; }
         public string Modelo { get; set; }
         public int Año { get; set; }
-        public string Cilindro { get; set; }
+        public string Cilindrada { get; set; }
     }
 }

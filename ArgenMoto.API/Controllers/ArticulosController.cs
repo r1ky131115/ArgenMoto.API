@@ -1,7 +1,6 @@
 ﻿using ArgenMoto.Core.DTOs.Articulo;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
-using ArgenMoto.Infrastructure.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
