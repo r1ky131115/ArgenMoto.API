@@ -69,13 +69,21 @@ namespace ArgenMoto.Infrastructure.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var ordenCompra = await _context.OrdenesCompras.FindAsync(id);
+            var ordenCompra = await _context.OrdenesCompras
+                .Include(o => o.OrdenCompraDetalles)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
             if (ordenCompra == null) return;
 
             await using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                // Eliminar primero los detalles
+                _context.OrdenCompraDetalles.RemoveRange(ordenCompra.OrdenCompraDetalles);
+
+                // Luego eliminar la orden de compra
                 _context.OrdenesCompras.Remove(ordenCompra);
+
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
