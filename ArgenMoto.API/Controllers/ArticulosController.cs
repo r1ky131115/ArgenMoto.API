@@ -1,6 +1,7 @@
 ﻿using ArgenMoto.Core.DTOs.Articulo;
 using ArgenMoto.Core.Entities;
 using ArgenMoto.Core.Interfaces;
+using ArgenMoto.Infrastructure.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,9 +39,11 @@ namespace ArgenMoto.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateArticuloDTO>> CreateArticulo(CreateArticuloDTO articuloDto)
+        public async Task<ActionResult<CreateArticuloDTO>> CreateArticulo([FromBody]CreateArticuloDTO articuloDto)
         {
             var articulo = _mapper.Map<Articulo>(articuloDto);
+            articulo.Codigo = $"MOTO0{await _articuloRepository.GetNextNumeroArticulo()}";
+
             await _articuloRepository.CreateAsync(articulo);
             return CreatedAtAction(nameof(GetArticulo), new { id = articulo.Id }, _mapper.Map<CreateArticuloDTO>(articulo));
         }

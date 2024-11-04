@@ -12,5 +12,6 @@ namespace ArgenMoto.Core.Interfaces
         Task UpdateAsync(Articulo articulo);
         Task DeleteAsync(int id);
         Task<IEnumerable<Articulo>> GetByProveedorIdAsync(int proveedorId);
+        Task<int> GetNextNumeroArticulo();
     }
 }

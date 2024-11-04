@@ -52,6 +52,14 @@ namespace ArgenMoto.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<int> GetNextNumeroArticulo()
+        {
+            var ultimoArticulo = await _context.Articulos
+                .OrderByDescending(o => o.Id)
+                .FirstOrDefaultAsync();
+
+            return (ultimoArticulo?.Id ?? 0) + 1;
+        }
 
         public async Task UpdateAsync(Articulo articulo)
         {

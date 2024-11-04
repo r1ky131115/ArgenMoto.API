@@ -28,6 +28,11 @@ namespace ArgenMoto.API.Mappings
             CreateMap<Articulo, ReadArticuloDTO>();
             CreateMap<ReadArticuloDTO, Articulo>();
             CreateMap<Articulo, ReadBasicArticuloDTO>();
+            CreateMap<Articulo, CreateArticuloDTO>();
+            CreateMap<CreateArticuloDTO, Articulo>()
+                .ForMember(dest => dest.Motor, opt => opt.MapFrom(src => src.NroMotor))
+                .ForMember(dest => dest.StockMinimo, opt => opt.MapFrom(src => src.StockActual))
+                .ForMember(dest => dest.StockMaximo, opt => opt.MapFrom(src => src.StockActual));
 
             //Mapeo de usuarios
             CreateMap<Usuario, ReadUsuarioDTO>()
